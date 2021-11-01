@@ -39,6 +39,7 @@ defmodule UnicornExample.MixProject do
       {:plug, "~> 1.12"},
       {:vega_lite, "~> 0.1"},
       {:kino, "~> 0.3"},
+      {:unicorn_fonts, github: "tinyelixir/unicorn_fonts", branch: "main"},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.11.3", targets: @all_targets},

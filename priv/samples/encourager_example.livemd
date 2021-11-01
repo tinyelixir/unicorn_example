@@ -1,0 +1,48 @@
+# Untitled notebook
+
+## Set up
+
+```elixir
+alias UnicornFonts.Buffer
+{:ok, pid} = Buffer.start_link()
+```
+
+## Module definition
+
+```elixir
+defmodule Encourager do
+  alias UnicornFonts.Buffer
+  alias Blinkchain.{Color, Point}
+
+  def render_encouragement(message) do
+    Buffer.set_message(message)
+
+    render_frame(Buffer.next_frame())
+  end
+
+  def render_frame(nil), do: nil
+
+  def render_frame(frame) do
+    frame.pixels
+    |> Stream.with_index()
+    |> Enum.each(fn {{r, g, b}, i} ->
+      x = Kernel.rem(i, 8)
+      y = Kernel.floor(i / 8)
+      Blinkchain.set_pixel(%Point{x: x, y: y}, %Color{r: r, g: g, b: b})
+    end)
+
+    Blinkchain.render()
+
+    :timer.sleep(250)
+    render_frame(Buffer.next_frame())
+  end
+end
+```
+
+## Render an encouraging message
+
+```elixir
+message = "HELLO! ❤️"
+
+Encourager.render_encouragement(message)
+```
